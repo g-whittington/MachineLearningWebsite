@@ -1,5 +1,5 @@
 ---
-title: "Random Forest"
+title: "random-forest"
 format: 
   html: 
     embed-resources: true
@@ -199,4 +199,5 @@ forest_pred |>
 fit_resamples(forest_final_workflow, resamples = analysis_folds) |> 
   collect_metrics()
 ```
+
 
