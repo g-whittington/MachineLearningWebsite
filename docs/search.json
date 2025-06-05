@@ -123,7 +123,7 @@
     "href": "index.html",
     "title": "Machine Learning Notebook 👀",
     "section": "",
-    "text": "This website will be our Machine Learning course, where we explore various statistical and machine learning models using the Youth Risk Behavior Survey (YRBS) 2023 dataset. Through this course, I learned to implement and understand different modeling techniques using the tidymodels framework in R.\n\nWhat You’ll Find Here\n\nAbout Me: A little bit about me and my research interests.\nThe Dataset: Information about my primary dataset and the research question I am trying to answer.\nModel Implementations: Hands-on examples of different models to answer the question:\n\nLogistic Regression\nLasso Regression\nDecision Trees\nRandom Forest\nK-Nearest Neighbors (KNN)"
+    "text": "This website is the material covered though lectures at FAU’s SIBDS, where we explore various statistical and machine learning models using the Youth Risk Behavior Survey (YRBS) 2023 dataset. Through this course, I learned to implement and understand different modeling techniques using the tidymodels framework in R.\n\nWhat You’ll Find Here\n\nAbout Me: A little bit about me and my research interests.\nThe Dataset: Information about my primary dataset and the research question I am trying to answer.\nModel Implementations: Hands-on examples of different models to answer the question:\n\nLogistic Regression\nLasso Regression\nDecision Trees\nRandom Forest\nK-Nearest Neighbors (KNN)"
   },
   {
     "objectID": "models/trees.html",
@@ -333,6 +333,6 @@
     "href": "models/random-forest.html#resample-metrics",
     "title": "Random Forest",
     "section": "Resample Metrics",
-    "text": "Resample Metrics\n\nfit_resamples(forest_final_workflow, resamples = analysis_folds) |&gt; \n  collect_metrics()\n\n# A tibble: 3 × 6\n  .metric     .estimator   mean     n std_err .config             \n  &lt;chr&gt;       &lt;chr&gt;       &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;               \n1 accuracy    binary     0.957      5 0.00142 Preprocessor1_Model1\n2 brier_class binary     0.0402     5 0.00127 Preprocessor1_Model1\n3 roc_auc     binary     0.685      5 0.0104  Preprocessor1_Model1"
+    "text": "Resample Metrics\n\nfit_resamples(forest_final_workflow, resamples = analysis_folds) |&gt; \n  collect_metrics()\n\n# A tibble: 3 × 6\n  .metric     .estimator   mean     n std_err .config             \n  &lt;chr&gt;       &lt;chr&gt;       &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;               \n1 accuracy    binary     0.957      5 0.00142 Preprocessor1_Model1\n2 brier_class binary     0.0402     5 0.00126 Preprocessor1_Model1\n3 roc_auc     binary     0.684      5 0.0103  Preprocessor1_Model1"
   }
 ]

@@ -5,7 +5,7 @@ format:
     embed-resources: true
 ---
 
-This website will be our Machine Learning course, where we explore various statistical and machine learning models using the Youth Risk Behavior Survey (YRBS) 2023 dataset. Through this course, I learned to implement and understand different modeling techniques using the `tidymodels` framework in R.
+This website is the material covered though lectures at FAU's SIBDS, where we explore various statistical and machine learning models using the Youth Risk Behavior Survey (YRBS) 2023 dataset. Through this course, I learned to implement and understand different modeling techniques using the `tidymodels` framework in R.
 
 ### What You'll Find Here
 
