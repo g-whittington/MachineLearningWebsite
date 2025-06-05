@@ -1,0 +1,202 @@
+---
+title: "random-forest"
+format: 
+  html: 
+    embed-resources: true
+---
+
+## Model Overview
+
+Random forest is a commonly-used machine learning algorithm, trademarked by Leo Breiman and Adele Cutler, that combines the output of multiple decision trees to reach a single result. Its ease of use and flexibility have fueled its adoption, as it handles both classification and regression problems.
+
+## Libraries
+```{r}
+#| label: libraries
+#| message: false
+
+library(tidymodels)
+```
+
+## Data
+```{r}
+#| label: load-data
+
+analysis_train <- readRDS("data/analysis_train.rds")
+analysis_folds <- readRDS("data/analysis_folds.rds")
+```
+
+```{r}
+#| label: eda
+#| include: false
+
+# like totally already know the data
+```
+
+## Model Recipe
+```{r}
+#| label: model-recipe
+
+forest_recipe <-
+  recipe(WeaponCarryingSchool ~ ., data = analysis_train) |> 
+  step_impute_mode(all_nominal_predictors()) |> 
+  step_impute_mean(all_numeric_predictors()) |> 
+  step_dummy(all_nominal_predictors())
+
+forest_recipe
+```
+
+## Model Specification
+```{r}
+#| label: model-spec
+
+forest_spec <- 
+  rand_forest(
+    mtry = tune(),
+    min_n = tune(),
+    trees = 100
+  ) |> 
+  set_mode("classification") |> 
+  set_engine("ranger", importance = "permutation")
+
+forest_spec
+```
+
+## Model Workflow
+```{r}
+#| label: model-workflow
+
+forest_workflow <-
+  workflow() |> 
+  add_recipe(forest_recipe) |> 
+  add_model(forest_spec)
+
+forest_workflow
+```
+
+## Hyperparameter Tuning
+```{r}
+#| label: model-tuning
+#| eval: false
+
+forest_tune <-
+  tune_grid(
+    forest_workflow,
+    resamples = analysis_folds,
+    grid = 11
+  )
+
+saveRDS(forest_tune, "model_outputs/forest_tune.rds")
+
+forest_tune
+```
+
+```{r}
+#| echo: false
+
+forest_tune <- readRDS("model_outputs/forest_tune.rds")
+
+forest_tune
+```
+
+## Collect Tuning Metrics
+
+```{r}
+collect_metrics(forest_tune)
+```
+
+## Visualize Metrics
+
+```{r}
+autoplot(forest_tune)
+```
+
+```{r}
+best_forest <- select_best(forest_tune, metric = "roc_auc")
+
+best_forest
+```
+
+## Finalize Model Workflow
+```{r}
+#| label: model-finalize
+#| 
+forest_final_workflow <- finalize_workflow(forest_workflow, best_forest)
+
+forest_final_workflow
+```
+
+## Fit the Model
+```{r}
+#| label: model-fit
+#| eval: false
+
+forest_fit <- fit(forest_final_workflow, analysis_train)
+
+saveRDS(forest_fit, "model_outputs/forest_fit.rds")
+
+forest_fit
+```
+
+```{r}
+#| echo: false
+forest_fit <- readRDS("model_outputs/forest_fit.rds")
+
+forest_fit
+```
+
+## Make Model Predictions
+```{r}
+#| label: model-prediction
+
+forest_pred <- 
+  augment(forest_fit, analysis_train) |> 
+  select(WeaponCarryingSchool, .pred_class, .pred_1, .pred_0)
+
+forest_pred
+```
+
+## ROC Plot
+```{r}
+#| label: fig-tree-roc
+#| eval: false
+
+roc_forest <- 
+  forest_pred |> 
+  roc_curve(
+    truth = WeaponCarryingSchool,
+    .pred_1,
+    event_level = "second"
+  ) |> 
+  autoplot()
+
+saveRDS(roc_forest, "roc_graphs/forest.rds")
+
+roc_forest
+```
+
+```{r}
+#| echo: false
+roc_forest <- readRDS("roc_graphs/forest.rds")
+
+roc_forest
+```
+
+```{r}
+#| label: model-roc-auc
+
+forest_pred |> 
+  roc_auc(
+    truth = WeaponCarryingSchool,
+    .pred_1,
+    event_level = "second"
+  )
+```
+
+## Resample Metrics
+```{r}
+#| label: resample-metrics
+
+fit_resamples(forest_final_workflow, resamples = analysis_folds) |> 
+  collect_metrics()
+```
+

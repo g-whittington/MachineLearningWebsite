@@ -1,0 +1,22 @@
+---
+title: "About Me"
+format: 
+  html: 
+    embed-resources: true
+---
+
+::: {.profile-container}
+::: {.profile-image}
+![](img/cat.jpg){.circle-image}
+:::
+
+::: {.profile-text}
+### I am George Whittington
+
+As an undergraduate student majoring in statistics, I'm particularly drawn to the exciting field of machine learning. I love the process of building models and seeing how they can solve real-world problems. 
+
+I actively use both R and Python in my work, and I'm committed to transparency and collaboration by making my projects available on public repositories.
+
+If I could describe myself using three emojis I would select: 👾 😼 😁
+:::
+:::
